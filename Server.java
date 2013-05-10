@@ -9,13 +9,15 @@ class ServerThread extends Thread {
 
     // The socket passed from the creator
     private Socket socket = null;
+	private BuffyTheVampireSlayer btvs = null;
 	String name;
 	int clientCount = 0;
 	
 
-    public ServerThread(Socket socket) {
+    public ServerThread(Socket socket, BuffyTheVampireSlayer btvs) {
 
     	this.socket = socket;
+		this.btvs = btvs;
 
     }
 
@@ -32,20 +34,21 @@ class ServerThread extends Thread {
             String input;
 
             // Attach a printer to the socket's output stream
-            PrintWriter socketOut = new PrintWriter(socket.getOutputStream(),
-                true);
+
+            //PrintWriter socketOut = new PrintWriter(socket.getOutputStream(),
+            //    true);
             BufferedReader socketIn = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
             // Send a message to the client
 			
             if((input = socketIn.readLine()) != null){
 				if(value == 1) {
-                //socketOut.println("Echo: " + input);
 				socketOut.println(input+" is connected");
 				name = input;
 				value++;
 				}
 				else {
+				
 				socketOut.println(name+":" + input);
 				}
             }
@@ -69,6 +72,8 @@ public class Server {
 
 	// The server socket, connections arrive here
         ServerSocket serverSocket = null;
+		BuffyTheVampireSlayer btvs = new BuffyTheVampireSlayer();
+		MessageConsumer consumer = new MessageConsumer(btvs);
 
         try {
 
@@ -82,6 +87,7 @@ public class Server {
 
         }
         System.out.println("Sucessfully connected to port: 7777");
+		consumer.start();
 	// Loop forever
         while (true) {
 
@@ -91,7 +97,10 @@ public class Server {
 	     * 2. Create a new thread of type ServerThread
 	     * 3. Call start on the new thread
 	     */
-            new ServerThread(serverSocket.accept()).start();
+			Socket temp = new Socket();
+			consumer.addSocket(temp);
+			new ServerThread(temp, btvs).start();
+            //new ServerThread(serverSocket.accept()).start();
         }
     }
 }
