@@ -1,10 +1,10 @@
 import java.util.LinkedList;
 
-class BuffyTheVampireSlayer{
+class UnboundedBuffer{
     private LinkedList<String> messageList;
     private int numMessages;
 
-    public BuffyTheVampireSlayer(){
+    public UnboundedBuffer(){
         messageList = new LinkedList<>();
         numMessages = 0;
     

@@ -9,13 +9,13 @@ class ServerThread extends Thread {
 
     // The socket passed from the creator
     private Socket socket = null;
-	private BuffyTheVampireSlayer btvs = null;
+	private UnboundedBuffer bb = null;
 	private String name;
 	
 
-    public ServerThread(Socket socket, BuffyTheVampireSlayer btvs) {
+    public ServerThread(Socket socket, UnboundedBuffer bb) {
     	this.socket = socket;
-		this.btvs = btvs;
+		this.bb = bb;
     }
 
  // Handle the connection
@@ -35,13 +35,13 @@ class ServerThread extends Thread {
                     if((input = socketIn.readLine()) != null){
                         if(value == 1) {
                             //socketOut.println("Echo: " + input);
-                            btvs.insert(input + " is connected");
+                            bb.insert(input + " is connected");
                             //socketOut.println(input+" is connected");
                             name = input;
                             value--;
                         }
                         else{
-                            btvs.insert(name + ": " + input);
+                            bb.insert(name + ": " + input);
                             //socketOut.println(name+":" + input);
                         }
                     }
@@ -64,14 +64,14 @@ class ServerThread extends Thread {
 }
 
 // The server
-public class Server {
+public class ChatServer {
     static int numConnections = 0;
     public static void main(String[] args) throws IOException {
 
         
         ServerSocket serverSocket = null;
-        BuffyTheVampireSlayer btvs = new BuffyTheVampireSlayer();
-        MessageConsumer messageTaker = new MessageConsumer(btvs);
+        UnboundedBuffer bb = new UnboundedBuffer();
+        MessageConsumer messageTaker = new MessageConsumer(bb);
         try {
 
 	    // Listen on on port 7777
@@ -96,7 +96,7 @@ public class Server {
             System.out.println("Number of connections: " + numConnections);
 			Socket temp = serverSocket.accept();
 			messageTaker.addSocket(temp);
-			new ServerThread(temp, btvs).start();
+			new ServerThread(temp, bb).start();
             numConnections++;
             
             //new ServerThread(serverSocket.accept()).start();

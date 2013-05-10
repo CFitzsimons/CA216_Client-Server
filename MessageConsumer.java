@@ -5,18 +5,18 @@ import java.io.IOException;
 
 class MessageConsumer extends Thread{
 
-    private BuffyTheVampireSlayer btvs;
+    private UnboundedBuffer bb;
     private ArrayList<Socket> socketList;
     private ArrayList<PrintWriter> writerList;
     
-    MessageConsumer(BuffyTheVampireSlayer btvs){
-        this.btvs = btvs;
+    MessageConsumer(UnboundedBuffer bb){
+        this.bb = bb;
         socketList = new ArrayList<>();
         writerList = new ArrayList<>();
     }
     
-    MessageConsumer(BuffyTheVampireSlayer btvs, Socket startingSocket){
-        this(btvs);
+    MessageConsumer(UnboundedBuffer bb, Socket startingSocket){
+        this(bb);
         addSocket(startingSocket);
     }
     
@@ -25,7 +25,7 @@ class MessageConsumer extends Thread{
         while(true){
             String input;
             try{
-                if((input = btvs.remove()) != null)
+                if((input = bb.remove()) != null)
                     sendMessage(input);
             }catch(InterruptedException e){
                 e.printStackTrace();
