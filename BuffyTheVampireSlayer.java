@@ -16,6 +16,7 @@ class BuffyTheVampireSlayer{
         messageList.addFirst(message);
         numMessages++;
         notifyAll();
+        //System.out.println(message);
     }
     
     
@@ -25,12 +26,14 @@ class BuffyTheVampireSlayer{
     //The latter condition might not apply because this is a LinkedList and therefore
     //unbounded.
     public synchronized String remove() throws InterruptedException{
-        while(numMessages == 0){
+        while(numMessages <= 0){
             wait();
         }
         numMessages--;
-        notifyAll();
-        return messageList.removeLast();
+        String temp = messageList.removeLast();
+        //System.out.println(temp);
+        //notifyAll();
+        return temp;
     }
     
 }

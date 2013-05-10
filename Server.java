@@ -9,56 +9,56 @@ class ServerThread extends Thread {
 
     // The socket passed from the creator
     private Socket socket = null;
-	String name;
+    private BuffyTheVampireSlayer btvs;
+	private String name;
 	int clientCount = 0;
 	
 
-    public ServerThread(Socket socket) {
-
+    public ServerThread(Socket socket, BuffyTheVampireSlayer btvs) {
+        this.btvs = btvs;
     	this.socket = socket;
 
     }
 
-    // Handle the connection
+ // Handle the connection
     public void run() {
-		int value = 1;
-		
-		clientCount++;
-		System.out.println("Clients = "+clientCount);
+            int value = 1;
 
-    while(true){
-        try {
-			
-            String input;
+        while(true){
+            try {
+                
+                String input;
 
-            // Attach a printer to the socket's output stream
-            PrintWriter socketOut = new PrintWriter(socket.getOutputStream(),
-                true);
-            BufferedReader socketIn = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
-            // Send a message to the client
-			
-            if((input = socketIn.readLine()) != null){
-				if(value == 1) {
-                //socketOut.println("Echo: " + input);
-				socketOut.println(input+" is connected");
-				name = input;
-				value++;
-				}
-				else {
-				socketOut.println(name+":" + input);
-				}
+                BufferedReader socketIn = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+                // Send a message to the client
+                
+                try{
+                    if((input = socketIn.readLine()) != null){
+                        if(value == 1) {
+                            //socketOut.println("Echo: " + input);
+                            btvs.insert(input + " is connected");
+                            //socketOut.println(input+" is connected");
+                            name = input;
+                            value--;
+                        }
+                        else{
+                            btvs.insert(name + ": " + input);
+                            //socketOut.println(name+":" + input);
+                        }
+                    }
+                    // Close things
+                }catch(SocketException e){
+                    //Do not handle exception and terminate thread
+                    this.interrupt();
+                }
+
+            } catch (IOException e) {
+               e.printStackTrace();
+                //break;
             }
-            // Close things
-
-        } catch (IOException e) {
-			clientCount--;
-			System.err.println("Clients = "+clientCount);
-           // e.printStackTrace();
-            break;
-            }
-         }//close true loop
-        }
+        }//close true loop
+    }
     
 }
 
@@ -69,12 +69,14 @@ public class Server {
 
 	// The server socket, connections arrive here
         ServerSocket serverSocket = null;
-
+        BuffyTheVampireSlayer btvs = new BuffyTheVampireSlayer();
+        MessageConsumer messageTaker = new MessageConsumer(btvs);
+        
         try {
 
 	    // Listen on on port 7777
             serverSocket = new ServerSocket(7777);
-
+            messageTaker.start();
         } catch (IOException e) {
 
             System.err.println("Could not listen on port: 7777");
@@ -91,7 +93,11 @@ public class Server {
 	     * 2. Create a new thread of type ServerThread
 	     * 3. Call start on the new thread
 	     */
-            new ServerThread(serverSocket.accept()).start();
+            Socket tmpSocket = serverSocket.accept();
+            messageTaker.addSocket(tmpSocket);
+            new ServerThread(tmpSocket, btvs).start();
+            
+            //new ServerThread(serverSocket.accept()).start();
         }
     }
 }

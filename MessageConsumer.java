@@ -21,36 +21,43 @@ class MessageConsumer extends Thread{
     }
     
     public void run(){
-        while(true){
-            try{
-                sendMessage(btvs.remove());
-            }catch(InterruptedException e){
-                //Don't handle
-            }
         
+        while(true){
+            String input;
+            try{
+                if((input = btvs.remove()) != null)
+                    sendMessage(input);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
         }
     }
+    
     //Takes a string and outputs it to all preinitalized PrintWriters
     private void sendMessage(String toSend){
-    
-        for(int i = 0; i < writerList.size(); i++){
-            writerList.get(i).write(toSend);       
+
+        for(int i = 0; i < socketList.size(); i++){
+            try{
+                PrintWriter tmp = new PrintWriter(socketList.get(i).getOutputStream(), true);  
+                tmp.println(toSend);
+
+            }catch(IOException e){
+                socketList.remove(i);
+            }
         }
     }
+    
     //Adds a potential client to the array
     // - Creates a printwriter associated with the socket.
     // - Creates/adds nothing if input is null
     public void addSocket(Socket toAdd){
         if(toAdd == null)
             return;
-        try{
-            socketList.add(toAdd);
-            writerList.add(new PrintWriter(toAdd.getOutputStream(), true));
-        }catch(IOException e){
-            e.printStackTrace();
-            System.err.println("Error getting socket output stream");
-        }
+        socketList.add(toAdd);
+            //writerList.add(new PrintWriter(toAdd.getOutputStream(), true));
+
     }
+    
     //Removes a socket and it's related PrintWriter
     public void removeSocket(int index){
         //Check if the index is in bounds
