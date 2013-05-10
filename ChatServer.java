@@ -9,13 +9,13 @@ class ServerThread extends Thread {
 
     // The socket passed from the creator
     private Socket socket = null;
-	private UnboundedBuffer bb = null;
+	private UnboundedBuffer ub = null;
 	private String name;
 	
 
-    public ServerThread(Socket socket, UnboundedBuffer bb) {
+    public ServerThread(Socket socket, UnboundedBuffer ub) {
     	this.socket = socket;
-		this.bb = bb;
+		this.ub = ub;
     }
 
  // Handle the connection
@@ -35,13 +35,13 @@ class ServerThread extends Thread {
                     if((input = socketIn.readLine()) != null){
                         if(value == 1) {
                             //socketOut.println("Echo: " + input);
-                            bb.insert(input + " is connected");
+                            ub.insert(input + " is connected");
                             //socketOut.println(input+" is connected");
                             name = input;
                             value--;
                         }
                         else{
-                            bb.insert(name + ": " + input);
+                            ub.insert(name + ": " + input);
                             //socketOut.println(name+":" + input);
                         }
                     }
@@ -70,8 +70,8 @@ public class ChatServer {
 
         
         ServerSocket serverSocket = null;
-        UnboundedBuffer bb = new UnboundedBuffer();
-        MessageConsumer messageTaker = new MessageConsumer(bb);
+        UnboundedBuffer ub = new UnboundedBuffer();
+        MessageConsumer messageTaker = new MessageConsumer(ub);
         try {
 
 	    // Listen on on port 7777
@@ -96,7 +96,7 @@ public class ChatServer {
             System.out.println("Number of connections: " + numConnections);
 			Socket temp = serverSocket.accept();
 			messageTaker.addSocket(temp);
-			new ServerThread(temp, bb).start();
+			new ServerThread(temp, ub).start();
             numConnections++;
             
             //new ServerThread(serverSocket.accept()).start();

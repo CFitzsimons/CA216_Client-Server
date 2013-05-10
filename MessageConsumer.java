@@ -5,18 +5,18 @@ import java.io.IOException;
 
 class MessageConsumer extends Thread{
 
-    private UnboundedBuffer bb;
+    private UnboundedBuffer ub;
     private ArrayList<Socket> socketList;
     private ArrayList<PrintWriter> writerList;
     
-    MessageConsumer(UnboundedBuffer bb){
-        this.bb = bb;
+    MessageConsumer(UnboundedBuffer ub){
+        this.ub = ub;
         socketList = new ArrayList<>();
         writerList = new ArrayList<>();
     }
     
-    MessageConsumer(UnboundedBuffer bb, Socket startingSocket){
-        this(bb);
+    MessageConsumer(UnboundedBuffer ub, Socket startingSocket){
+        this(ub);
         addSocket(startingSocket);
     }
     
@@ -25,7 +25,7 @@ class MessageConsumer extends Thread{
         while(true){
             String input;
             try{
-                if((input = bb.remove()) != null)
+                if((input = ub.remove()) != null)
                     sendMessage(input);
             }catch(InterruptedException e){
                 e.printStackTrace();
