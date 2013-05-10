@@ -48,7 +48,10 @@ class ServerThread extends Thread {
                     // Close things
                 }catch(SocketException e){
                     //Do not handle exception and terminate thread
-                    this.interrupt();
+                    
+                    Server.numConnections--;
+                    System.out.println("Number of connections: " + Server.numConnections);
+                    return;
                 }
 
             } catch (IOException e) {
@@ -62,10 +65,10 @@ class ServerThread extends Thread {
 
 // The server
 public class Server {
-
+    static int numConnections = 0;
     public static void main(String[] args) throws IOException {
 
-	// The server socket, connections arrive here
+        
         ServerSocket serverSocket = null;
         BuffyTheVampireSlayer btvs = new BuffyTheVampireSlayer();
         MessageConsumer messageTaker = new MessageConsumer(btvs);
@@ -90,9 +93,11 @@ public class Server {
 	     * 2. Create a new thread of type ServerThread
 	     * 3. Call start on the new thread
 	     */
+            System.out.println("Number of connections: " + numConnections);
 			Socket temp = serverSocket.accept();
 			messageTaker.addSocket(temp);
 			new ServerThread(temp, btvs).start();
+            numConnections++;
             
             //new ServerThread(serverSocket.accept()).start();
         }
