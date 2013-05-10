@@ -11,7 +11,9 @@ class BuffyTheVampireSlayer{
     }
     
     public synchronized void insert(String message){
-    
+        messageList.addFirst(message);
+        numMessages++;
+        notifyAll();
     }
     
     
