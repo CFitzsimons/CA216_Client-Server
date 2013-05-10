@@ -9,9 +9,13 @@ class BuffyTheVampireSlayer{
         numMessages = 0;
     
     }
-    
+    //Inserts message into the buffer
+    // - Becuase list is unbounded does not need to check if it's full
+    // - Notify's all waiting theads that information is available
     public synchronized void insert(String message){
-    
+        messageList.addFirst(message);
+        numMessages++;
+        notifyAll();
     }
     
     
