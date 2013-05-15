@@ -19,6 +19,7 @@ Design
 ======
  
 Firstly we made a few assumptions during the project, these are as follows:
+
 1. There is no requirement to limit character input from the client.
 2. There is no requirement to limit the number of clients connecting to the server at once.
 3. An assumption that we do not need to edit or provide addition details for the ChatApplet or related files(policy/chat.html).
@@ -26,6 +27,7 @@ Firstly we made a few assumptions during the project, these are as follows:
 5. There is no requirement to bound the buffer.
 
 Our ChatServer operates as follows:
+
 1. The server listens on port 7777
 2. When available, the server accepts a new connection from the port.
 3. This connection is saved and sent to the MessageConsumer class which trackes all clients
@@ -33,6 +35,7 @@ Our ChatServer operates as follows:
 5. Create and start a new thread with the socket that handles taking input from the client.
 
 Our ServerThread operates as such:
+
 1. A new instance of the object is created with the passed in socket.
 2. A BufferedReader is constructed and told to listen for input.
 3. Upon first executing, the Server waits for a message from the client with the client's name, which it stores.
@@ -41,6 +44,7 @@ Our ServerThread operates as such:
 6. Before exiting we decrement the global tracking variable.
 
 Our MessageConsumer operates as follows:
+
 1. Takes a Buffer and constructs a new object with the passed in parameter.
 2. Sockets can be added to the Consumer, which grants it knowledge of which sockets to output to.
 3. MessageConsumer constantly attempts to remove messages from the buffer and send them out to all known clients.
@@ -49,11 +53,13 @@ Our MessageConsumer operates as follows:
 Note: We chose to use an ArrayList here as it permits faster random access then a LinkedList.
 
 Our UnboundedBuffer class contains two primary methods:
+
 Insert(String)
-This places a String object into the buffer, if the input is null no placement happens. 
-The method will also notify all waiting threads that there is data available.
+
+This places a String object into the buffer, if the input is null no placement happens. The method will also notify all waiting threads that there is data available.
 
 remove()
+
 Removes the first element inserted into the buffer, as the buffer operates on a first in, first out basis.
 
 Notes:
