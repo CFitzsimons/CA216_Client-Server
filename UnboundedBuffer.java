@@ -16,7 +16,6 @@ class UnboundedBuffer{
         messageList.addFirst(message);
         numMessages++;
         notifyAll();
-        //System.out.println(message);
     }
     
     
@@ -31,8 +30,6 @@ class UnboundedBuffer{
         }
         numMessages--;
         String temp = messageList.removeLast();
-        //System.out.println(temp);
-        //notifyAll();
         return temp;
     }
     
