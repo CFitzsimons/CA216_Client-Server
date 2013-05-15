@@ -16,7 +16,7 @@ And run it with:
  
  
  Design
- ======
+ ===================
  
 Firstly we made a few assumptions during the project, these are as follows:
 1. There is no requirement to limit character input from the client.
@@ -61,7 +61,7 @@ Notes:
 - Both methods are synchronized to disallow concurrency issues.
 
 
-Problems
-========
-Potential problems:
+Potential Problems
+===================
+
 1. Using a static variable provides an easy way of tracking the amount of connections, however, our implementation has a potential error.  If you close multiple chat windows simultaneously then the chat counter may decrements out of order but will still produce the same end result.
