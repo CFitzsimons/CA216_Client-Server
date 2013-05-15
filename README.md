@@ -1,3 +1,16 @@
+Participants 
+============
+
+Colin Fitzsimons (https://github.com/CFitzsimons)
+
+Dylan Lee (https://github.com/leed9)
+
+Luiz Felipe Tafner (https://github.com/mrlftx)
+
+
+
+
+
 CA216_Client-Server
 ===================
 
@@ -54,11 +67,11 @@ Note: We chose to use an ArrayList here as it permits faster random access then 
 
 Our UnboundedBuffer class contains two primary methods:
 
-Insert(String)
+void insert(String)
 
 This places a String object into the buffer, if the input is null no placement happens. The method will also notify all waiting threads that there is data available.
 
-remove()
+String remove()
 
 Removes the first element inserted into the buffer, as the buffer operates on a first in, first out basis.
 
