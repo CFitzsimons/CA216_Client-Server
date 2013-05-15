@@ -15,8 +15,8 @@ And run it with:
 
  
  
- Design
- ===================
+Design
+======
  
 Firstly we made a few assumptions during the project, these are as follows:
 1. There is no requirement to limit character input from the client.
