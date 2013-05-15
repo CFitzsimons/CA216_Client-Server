@@ -41,7 +41,7 @@ class MessageConsumer extends Thread{
                 PrintWriter tmp = new PrintWriter(socketList.get(i).getOutputStream(), true);  
                 tmp.println(toSend);
 
-            }catch(IOException e){
+            }catch(IOException e){//Potential error here?
                 socketList.remove(i);
             }
         }

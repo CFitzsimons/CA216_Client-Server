@@ -51,7 +51,8 @@ class ServerThread extends Thread {
                     
                     Server.numConnections--;
                     System.out.println("Number of connections: " + Server.numConnections);
-                    return;
+                    ub.insert(name + " is disconnecting...");
+                    break;
                 }
 
             } catch (IOException e) {
@@ -66,6 +67,7 @@ class ServerThread extends Thread {
 // The server
 public class ChatServer {
     static int numConnections = 0;
+    
     public static void main(String[] args) throws IOException {
 
         
