@@ -17,6 +17,7 @@ And run it with:
  
  Design
  ======
+ 
 Firstly we made a few assumptions during the project, these are as follows:
 1. There is no requirement to limit character input from the client.
 2. There is no requirement to limit the number of clients connecting to the server at once.
