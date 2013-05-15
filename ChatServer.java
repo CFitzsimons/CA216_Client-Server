@@ -49,8 +49,9 @@ class ServerThread extends Thread {
                 }catch(SocketException e){
                     //Do not handle exception and terminate thread
                     
-                    Server.numConnections--;
-                    System.out.println("Number of connections: " + Server.numConnections);
+                    ChatServer.numConnections--;
+                    System.out.println("Number of connections: " + ChatServer.numConnections);
+                    
                     ub.insert(name + " is disconnecting...");
                     break;
                 }
@@ -66,7 +67,7 @@ class ServerThread extends Thread {
 
 // The server
 public class ChatServer {
-    static int numConnections = 0;
+    public static int numConnections = 0;
     
     public static void main(String[] args) throws IOException {
 
@@ -95,11 +96,13 @@ public class ChatServer {
 	     * 2. Create a new thread of type ServerThread
 	     * 3. Call start on the new thread
 	     */
-            System.out.println("Number of connections: " + numConnections);
+            System.out.println("Number of connections: " + ChatServer.numConnections);
+            
 			Socket temp = serverSocket.accept();
 			messageTaker.addSocket(temp);
 			new ServerThread(temp, ub).start();
-            numConnections++;
+            ChatServer.numConnections++;
+            
             
             //new ServerThread(serverSocket.accept()).start();
         }

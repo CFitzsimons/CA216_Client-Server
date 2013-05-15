@@ -1,0 +1,2 @@
+Potential problems:
+1. Using a static variable provides an easy way of tracking the amount of connections, however, our implementation has a potential error.  If you close multiple chat windows simultaneously then the chat counter may decrements out of order but will still produce the same end result.
